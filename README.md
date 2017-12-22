@@ -4,7 +4,9 @@ Run As Root
 
 A java library to run pieces of code as root.
 
-A new JVM is created in every execution and destroied after completetion.
+A new JVM is created in every execution and destroyed after completetion.
+
+This library uses [Out Process](https://github.com/dyorgio/out-process) to create new JVMs.
 
 Why use it?
 -----

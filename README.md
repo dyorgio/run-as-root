@@ -1,37 +1,38 @@
-## Welcome to GitHub Pages
+Run As Root
+===============
+[![Build Status](https://travis-ci.org/dyorgio/run-as-root.svg?branch=master)](https://travis-ci.org/dyorgio/run-as-root) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.dyorgio.runtime/run-as-root/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.dyorgio.runtime/run-as-root) [![Dependency Status](https://beta.gemnasium.com/badges/github.com/dyorgio/run-as-root.svg)](https://beta.gemnasium.com/projects/github.com/dyorgio/run-as-root)
 
-You can use the [editor on GitHub](https://github.com/dyorgio/run-as-root/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+A java library to run pieces of code as root.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+A new JVM is created in every execution and destroied after completetion.
 
-### Markdown
+Why use it?
+-----
+* Ask user for credentials in Windows, Linux and macOS.
+* Do privileged actions.
+* Limit scope of root code execution.
+* Upgrade permissions during runtime temporarily.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+Usage
+-----
+```java
+// Specify JVM options (optional)
+RootExecutor rootExecutor = new RootExecutor("-Xmx64m");
 
-```markdown
-Syntax highlighted code block
+// Execute privileged action without return
+rootExecutor.run(() -> System.out.println("Call your admin code here."));
 
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+// Execute privileged action with return
+String value = rootExecutor.call(() -> System.getProperty("Call your admin code with return here."));
+System.out.println(value);
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/dyorgio/run-as-root/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+Maven
+-----
+```xml
+<dependency>
+    <groupId>com.github.dyorgio.runtime</groupId>
+    <artifactId>run-as-root</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```

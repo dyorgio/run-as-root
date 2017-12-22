@@ -11,8 +11,5 @@
         <activatedProfiles>
             <activatedProfile>release</activatedProfile>
         </activatedProfiles>
-        <properties>
-            <privateKey>~/.ssh/run-as-root</privateKey>
-        </properties>
     </action>
 </actions>

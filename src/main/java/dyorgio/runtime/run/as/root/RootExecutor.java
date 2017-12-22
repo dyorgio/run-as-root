@@ -1,3 +1,18 @@
+/** *****************************************************************************
+ * Copyright 2017 See AUTHORS file.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ***************************************************************************** */
 package dyorgio.runtime.run.as.root;
 
 import dyorgio.runtime.out.process.CallableSerializable;
@@ -12,12 +27,25 @@ import java.util.Locale;
 import java.util.concurrent.Callable;
 
 /**
+ * Run serializable <code>Callable</code>s and <code>Runnable</code>s in another
+ * JVM with elevated privileges.<br>
+ * Every <code>run()</code> or <code>call()</code> creates a new JVM and destroy
+ * it.<br>
+ * Normally this class can be a singleton if classpath and jvmOptions are always
+ * equals, otherwise create a new instance for every cenario.<br>
+ * <br>
  *
+ * @author dyorgio
+ * @see CallableSerializable
+ * @see RunnableSerializable
  * @author dyorgio
  */
 public class RootExecutor implements Serializable {
 
-    private static final String RUNNING_AS_ROOT = "$RunnningAsRoot";
+    /**
+     * System property flag to identify an run-as-root code at runtime.
+     */
+    public static final String RUNNING_AS_ROOT = "$RunnningAsRoot";
 
     private static final RootProcessManager MANAGER;
 
@@ -34,16 +62,41 @@ public class RootExecutor implements Serializable {
         }
     }
 
-    private final String[] javaOptions;
+    private final OneRunOutProcess outProcess;
 
+    /**
+     * Creates an instance with specific java options
+     *
+     * @param javaOptions JVM options (ex:"-xmx32m")
+     */
     public RootExecutor(String... javaOptions) throws IOException {
-        this.javaOptions = javaOptions;
+        this.outProcess = new OneRunOutProcess(MANAGER, javaOptions);
     }
 
+    /**
+     * Runs runnable in a new JVM with elevated privileges.
+     *
+     * @param runnable A <code>RunnableSerializable</code> to run.
+     * @throws Exception If cannot create a new JVM.
+     * @throws UserCanceledException If user cancel or close prompt.
+     * @throws NotAuthorizedException If user doesn't have root privileges.
+     * @see RunnableSerializable
+     */
     public void run(RunnableSerializable runnable) throws Exception, UserCanceledException, NotAuthorizedException {
         execute(runnable, false);
     }
 
+    /**
+     * Calls runnable in a new JVM with elevated privileges.
+     *
+     * @param <T> Result type.
+     * @param callable A <code>CallableSerializable</code> to be called.
+     * @return The result.
+     * @throws Exception If cannot create a new JVM.
+     * @throws UserCanceledException If user cancel or close prompt.
+     * @throws NotAuthorizedException If user doesn't have root privileges.
+     * @see CallableSerializable
+     */
     public <T extends Serializable> T call(CallableSerializable<T> callable) throws Exception, UserCanceledException, NotAuthorizedException {
         return (T) execute(callable, true);
     }
@@ -59,8 +112,6 @@ public class RootExecutor implements Serializable {
             }
 
         }
-        
-        OneRunOutProcess outProcess = new OneRunOutProcess(MANAGER, javaOptions);
 
         OneRunOutProcess.OutProcessResult<Serializable> result = outProcess.call(new CallableSerializable<Serializable>() {
             @Override

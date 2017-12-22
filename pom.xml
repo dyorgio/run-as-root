@@ -42,7 +42,7 @@
     
     <scm>
         <connection>scm:git:git@github.com:dyorgio/run-as-root.git</connection>
-        <developerConnection>scm:git:git@github.com:dyorgio/run-as-root.git</developerConnection>
+        <developerConnection>scm:git:git@run-as-root.github.com:dyorgio/run-as-root.git</developerConnection>
         <url>https://github.com/dyorgio/run-as-root.git</url>
         <tag>HEAD</tag>
     </scm>

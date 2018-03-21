@@ -2,7 +2,7 @@ Run As Root
 ===============
 [![Build Status](https://travis-ci.org/dyorgio/run-as-root.svg?branch=master)](https://travis-ci.org/dyorgio/run-as-root) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.dyorgio.runtime/run-as-root/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.dyorgio.runtime/run-as-root) [![Dependency Status](https://beta.gemnasium.com/badges/github.com/dyorgio/run-as-root.svg)](https://beta.gemnasium.com/projects/github.com/dyorgio/run-as-root)
 
-A java library to run pieces of code as root.
+A java library to run pieces of code as root using native root password input dialog.
 
 A new JVM is created in every execution and destroyed after completetion.
 

@@ -35,6 +35,6 @@ Maven
 <dependency>
     <groupId>com.github.dyorgio.runtime</groupId>
     <artifactId>run-as-root</artifactId>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
 </dependency>
 ```

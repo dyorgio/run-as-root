@@ -38,7 +38,6 @@ import java.util.concurrent.Callable;
  * @author dyorgio
  * @see CallableSerializable
  * @see RunnableSerializable
- * @author dyorgio
  */
 public class RootExecutor implements Serializable {
 
@@ -113,22 +112,33 @@ public class RootExecutor implements Serializable {
 
         }
 
-        OneRunOutProcess.OutProcessResult<Serializable> result = outProcess.call(new CallableSerializable<Serializable>() {
-            @Override
-            public Serializable call() throws Exception {
-                System.setProperty(RUNNING_AS_ROOT, "true");
-                if (hasResult) {
-                    Callable<? extends Serializable> callable = (Callable<? extends Serializable>) command;
-                    return callable.call();
-                } else {
-                    ((Runnable) command).run();
-                    return null;
-                }
-            }
-        });
+        OneRunOutProcess.OutProcessResult<Serializable> result = outProcess.call(new RemoteCall(command, hasResult));
 
         MANAGER.handleCode(result.getReturnCode());
 
         return result.getResult();
+    }
+
+    private static final class RemoteCall implements CallableSerializable<Serializable> {
+
+        private final Serializable command;
+        private final boolean hasResult;
+
+        private RemoteCall(final Serializable command, boolean hasResult) {
+            this.command = command;
+            this.hasResult = hasResult;
+        }
+
+        @Override
+        public Serializable call() throws Exception {
+            System.setProperty(RUNNING_AS_ROOT, "true");
+            if (hasResult) {
+                Callable<? extends Serializable> callable = (Callable<? extends Serializable>) command;
+                return callable.call();
+            } else {
+                ((Runnable) command).run();
+                return null;
+            }
+        }
     }
 }

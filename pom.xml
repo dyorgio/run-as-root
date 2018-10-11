@@ -5,7 +5,7 @@
     
     <groupId>com.github.dyorgio.runtime</groupId>
     <artifactId>run-as-root</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.1-SNAPSHOT</version>
     
     <packaging>jar</packaging>
     
@@ -44,7 +44,7 @@
         <connection>scm:git:git@github.com:dyorgio/run-as-root.git</connection>
         <developerConnection>scm:git:git@run-as-root.github.com:dyorgio/run-as-root.git</developerConnection>
         <url>https://github.com/dyorgio/run-as-root.git</url>
-      <tag>run-as-root-1.2.0</tag>
+      <tag>HEAD</tag>
   </scm>
     
     <properties>

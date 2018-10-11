@@ -16,33 +16,34 @@
 package dyorgio.runtime.run.as.root.impl;
 
 import dyorgio.runtime.run.as.root.NotAuthorizedException;
-import dyorgio.runtime.run.as.root.RootProcessManager;
 import dyorgio.runtime.run.as.root.UserCanceledException;
-import java.util.ArrayList;
 import java.util.List;
+import dyorgio.runtime.run.as.root.RootProcessBuilderFactory;
 
 /**
- * Elevate out process in Linux platform.
+ * Elevate out process in macOS platform.
  *
  * @author dyorgio
  */
-public class LinuxRootProcessManager implements RootProcessManager {
+public class MacRootProcessBuilderFactory implements RootProcessBuilderFactory {
 
     @Override
     public ProcessBuilder create(List<String> commands) {
-        List<String> copy = new ArrayList<>();
-        copy.add("pkexec");
-        copy.addAll(commands);
-        return new ProcessBuilder(copy).inheritIO();
+        StringBuilder builder = new StringBuilder();
+        for (String command : commands) {
+            builder.append(command).append(' ');
+        }
+
+        return new ProcessBuilder("osascript", "-e",//
+                "do shell script \"" + builder + " 2>&1\" with administrator privileges").inheritIO();
     }
 
     @Override
     public void handleCode(int code) throws NotAuthorizedException, UserCanceledException {
         switch (code) {
-            case 127:
-                throw new NotAuthorizedException();
-            case 126:
+            case 1:
                 throw new UserCanceledException();
         }
     }
+
 }

@@ -1,5 +1,5 @@
 /** *****************************************************************************
- * Copyright 2017 See AUTHORS file.
+ * Copyright 2018 See AUTHORS file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import dyorgio.runtime.out.process.ProcessBuilderFactory;
  *
  * @author dyorgio
  */
-public interface RootProcessManager extends ProcessBuilderFactory {
+public interface RootProcessBuilderFactory extends ProcessBuilderFactory {
 
     /**Verify out process return code and throw exception according with it value.
      * 

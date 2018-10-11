@@ -18,9 +18,9 @@ package dyorgio.runtime.run.as.root;
 import dyorgio.runtime.out.process.CallableSerializable;
 import dyorgio.runtime.out.process.OneRunOutProcess;
 import dyorgio.runtime.out.process.RunnableSerializable;
-import dyorgio.runtime.run.as.root.impl.LinuxRootProcessManager;
-import dyorgio.runtime.run.as.root.impl.MacRootProcessManager;
-import dyorgio.runtime.run.as.root.impl.WinRootProcessManager;
+import dyorgio.runtime.run.as.root.impl.LinuxRootProcessBuilderFactory;
+import dyorgio.runtime.run.as.root.impl.MacRootProcessBuilderFactory;
+import dyorgio.runtime.run.as.root.impl.WinRootProcessBuilderFactory;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Locale;
@@ -46,16 +46,16 @@ public class RootExecutor implements Serializable {
      */
     public static final String RUNNING_AS_ROOT = "$RunnningAsRoot";
 
-    private static final RootProcessManager MANAGER;
+    private static final RootProcessBuilderFactory MANAGER;
 
     static {
         String OS = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
         if ((OS.contains("mac")) || (OS.contains("darwin"))) {
-            MANAGER = new MacRootProcessManager();
+            MANAGER = new MacRootProcessBuilderFactory();
         } else if (OS.contains("win")) {
-            MANAGER = new WinRootProcessManager();
+            MANAGER = new WinRootProcessBuilderFactory();
         } else if (OS.contains("nux")) {
-            MANAGER = new LinuxRootProcessManager();
+            MANAGER = new LinuxRootProcessBuilderFactory();
         } else {
             throw new RuntimeException("Unsupported OS:" + OS);
         }

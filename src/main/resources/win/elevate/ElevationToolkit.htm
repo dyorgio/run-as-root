@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Elevation Toolkit (Elevate and IsElevated)</title>
+<style type="text/css">
+body {
+  font: 10pt sans-serif;
+  margin: 0 .25in 0 .25in;
+}
+h2 {
+  border-top: 2pt solid blue;
+}
+p, pre, dt {
+  margin-left: .25in;
+}
+.important {
+  font-weight: bold;
+  color: red;
+}
+ul {
+  margin-left: .21in;
+  padding-left: .21in;
+}
+li {
+  margin-bottom: .1in;
+}
+dd {
+  margin-bottom: .1in;
+}
+tr {
+  vertical-align: top;
+}
+th {
+  border-bottom: 1pt solid black;
+  font: bold 10pt sans-serif;
+  text-align: left;
+  padding-right: 2ex;
+  white-space: nowrap;
+}
+td {
+  font: 10pt sans-serif;
+}
+td.const {
+  font: 10pt monospace;
+  padding-right: 2ex;
+}
+</style>
+</head>
+<body>
+<h1>Elevation Toolkit (Elevate and IsElevated)</h1>
+
+<p>Copyright &copy; 2010 by <a href="mailto:bstewart@iname.com">Bill Stewart</a></p>
+
+<h2>Freeware License</h2>
+
+<p>These programs may be used freely in any environment without payment to the author, with the following conditions:</p>
+
+<ul>
+  <li>Give me credit.</li>
+  <li>Let me know how you're using the programs.</li>
+  <li>The programs and this documentation must not be modified.</li>
+  <li>The programs cannot be used as a part another software package without notifying the author.</li>
+</ul>
+
+<p>These programs are distributed in the hope that they will be useful, but <strong>WITHOUT ANY WARRANTY; without even the IMPLIED WARRANTY OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.</strong></p>
+
+<h2>Background</h2>
+
+<p>Starting in Windows Vista and later, Microsoft introduced a new technology into the Windows operating system called User Account Control (UAC). The purpose of UAC is to make it easier for programmers to develop software to run with limited user accounts (LUA), and to make it easier for end users to log on with a limited account as well. One of UAC's behaviors is to disable the Administrators group token when logging on using an administrative account. In other words, when UAC is enabled, logging on as an administrator has the same effect as logging on with a limited account. You are still a member of the Administrators group, but your administrative privileges are disabled.</p>
+
+<p>When you attempt to perform an administrative task that a limited account cannot perform, Windows will request <em>elevation</em>. If you are a member of the Administrators group, Windows will prompt you for permission to continue. If you grant permission, Windows will run the program you specify, but with the Administrators group token enabled. If you are not a member of Administrators, Windows will prompt for administrative credentials. If you enter valid administrative credentials, Windows will run the specified program with the administrative credentials you specify. A program running with full administrative credentials is said to be running <em>elevated</em>. Prior to UAC, logging on as a member of Administrators meant that all processes you started ran elevated. (This is also the case if you disable UAC, which is not recommended.)</p>
+
+<p>Windows provides a way to run an arbitrary program elevated by right-clicking on the program and then choosing the <strong>Run as administrator</strong> option. However, there is currently no command-line equivalent for requesting program elevation. This is the purpose of the Elevate program (Elevate32.exe and Elevate64.exe). The Elevate program requests elevation for a program that you type on its command line.</p>
+
+<p>Savvy readers already know that Aaron Margosis provided an Elevate.js script on his Non-admin blog, but Elevate32.exe (and Elevate64.exe) has one distinct advantage: It can wait for the program to complete and return its exit code. This is useful in scripts where you want to run a program elevated and wait for it to complete. It can also specify the program's initial window state (e.g., minimized or hidden), which may be useful in some cases.</p>
+
+<p>The IsElevated program (IsElevated32.exe and IsElevated64.exe) tests whether the current program is elevated and returns an exit code of 0 if the program is not elevated, or 1 if the program is running elevated. Scripts can use IsElevated to check for elevation before performing tasks that require elevation.</p>
+
+<h2>Using Elevate</h2>
+
+<p>Use Elevate32.exe on 32-bit Windows platforms and Elevate64.exe on 64-bit Windows platforms. Elevate32.exe runs on x64 Windows, but keep in mind that it runs in the SysWOW64 compatibility subsystem.</p>
+
+<p><strong>Elevate32</strong> [<strong>-s</strong> <em>n</em>] [<strong>-d</strong> <em>dir</em>] [<strong>-w</strong>] [<strong>-q</strong>] <strong>--</strong> <em>program</em> [<em>parameters</em> [<em>...</em>]]</p>
+
+<p class="important">Important! All command-line arguments must appear <em>before</em> the program name on the command line.</p>
+
+<dl>
+  <dt><strong>-s</strong></dt>
+    <dd>Specifies the program's initial window state. See the table below for possible numeric values.</dd>
+  <dt><strong>-d</strong></dt>
+    <dd>Specifies the program's starting directory. Note that this argument is ignored on Windows Vista and newer as a security measure; it only works on Windows XP and earlier. The default is to start the program in its own directory.</dd>
+  <dt><strong>-w</strong></dt>
+    <dd>Waits for the program to complete, and then exits with the program's exit code.</dd>
+  <dt><strong>-q</strong></dt>
+    <dd>Runs quietly (no error messages).</dd>
+  <dt><strong>--</strong></dt>
+    <dd>Ends command-line argument processing; i.e., the first argument after the <strong>--</strong> is the command line to run.</dd>
+  <dt><em>program</em> [<em>parameters</em> [<em>...</em>]]</dt>
+    <dd>The command line to elevate.</dd>
+</dl>
+
+<p>If you use the <strong>-w</strong> argument, Elevate will wait for the program to complete and exit with the program's exit code. If you cancel the elevation prompt, Elevate will return an exit code of 1223 (ERROR_CANCELLED).</p>
+
+<p>Elevate works on Windows 2000 and later, but if you use it on Windows versions earlier than Vista, it will display the &quot;Run as&quot; dialog instead. If you use it on Windows Vista or later with UAC disabled (not recommended), Elevate will simply run the program and it will not prompt for confirmation or credentials.</p>
+
+<h3 style="margin-left: .25in;">Table: Valid Window State Values</h3>
+<table border="0" cellpadding="0" cellspacing="0" summary="" style="margin-left: .28in;">
+  <tr>
+    <th>Value</th>
+    <th>Windows API Constant*</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>0</td>
+    <td class="const">SW_HIDE</td>
+    <td>Hides the window and activates another window.</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td class="const">SW_SHOWNORMAL</td>
+    <td>Activates and displays a window. If the window is minimized or maximized, the system restores it to its original size and position. An application should specify this flag when displaying the window for the first time.</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td class="const">SW_SHOWMINIMIZED</td>
+    <td>Activates the window and displays it as a minimized window.</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td class="const">SW_SHOWMAXIMIZED</td>
+    <td>Activates the window and displays it as a maximized window.</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td class="const">SW_SHOWNOACTIVATE</td>
+    <td>Displays a window in its most recent size and position. The active window remains active.</td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td class="const">SW_SHOW</td>
+    <td>Activates the window and displays it in its current size and position.</td>
+  </tr>
+  <tr>
+    <td>6</td>
+    <td class="const">SW_MINIMIZE</td>
+    <td>Minimizes the specified window and activates the next top-level window.</td>
+  </tr>
+  <tr>
+    <td>7</td>
+    <td class="const">SW_SHOWMINNOACTIVE</td>
+    <td>Displays the window as a minimized window. The active window remains active.</td>
+  </tr>
+  <tr>
+    <td>8</td>
+    <td class="const">SW_SHOWNA</td>
+    <td>Displays the window in its current state. The active window remains active.</td>
+  </tr>
+  <tr>
+    <td>9</td>
+    <td class="const">SW_RESTORE</td>
+    <td>Activates and displays the window. If the window is minimized or maximized, the system restores it to its original size and position. An application should specify this flag when restoring a minimized window.</td>
+  </tr>
+  <tr>
+    <td>10</td>
+    <td class="const">SW_SHOWDEFAULT</td>
+    <td>Sets the show-state based on the state of the program that started the application.</td>
+  </tr>
+  <tr>
+    <td colspan="3" style="padding-top: 3pt;">*These names are for reference only. The <strong>-s</strong> argument requires a number for its parameter.</td>
+  </tr>
+</table>
+
+<h2>Using IsElevated</h2>
+
+<p>IsElevated32.exe is for 32-bit Windows platforms and works on 64-bit platforms as well. IsElevated64.exe is included for completeness. IsElevated returns an exit code of 0 if the current program is not elevated, or 1 if the current program is elevated.</p>
+
+<p><strong>IsElevated32</strong> [<strong>-q</strong>]</p>
+
+<dl>
+  <dt><strong>-q</strong></dt>
+    <dd>Runs quietly; that is, it does not display a message box with the elevation status (useful for scripting).</dd>
+</dl>
+
+<p>For those aware of my <a href="http://www.westmesatech.com/wast.html">Windows Admin Script Tools</a> package, IsElevated is a GUI version of the IsAdmin.exe tool.</p>
+
+<h2>Technical Details</h2>
+
+<p>Elevate uses the ShellExecuteEx Windows API with the <strong>runas</strong> verb.</p>
+
+<p>IsElevated tests whether the security token for the current process contains the Administrators group (the SID S-1-5-32-544), and then it tests whether the group is enabled.</p>
+
+<p>Note that the Elevate and IsElevated programs are not needed in Windows PowerShell since PowerShell can use .NET objects to start processes elevated and test whether the current process is elevated.</p>
+
+<h2>Examples</h2>
+
+<p>See the TestElevation.vbs and TestElevation.cmd scripts for examples of how to use the programs in scripts.</p>
+
+<h2>Version History</h2>
+
+<p>1.0 (21 Apr 2010)</p>
+<ul>
+  <li>Initial version.</li>
+</ul>
+
+</body>
+</html>

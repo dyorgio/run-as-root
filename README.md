@@ -4,7 +4,7 @@ Run As Root
 
 A java library to run pieces of code as root using native root password input dialog.
 
-A new JVM is created in every execution and destroyed after completetion.
+A new JVM is created in every execution and destroyed after completion.
 
 This library uses [Out Process](https://github.com/dyorgio/out-process) to create new JVMs.
 
@@ -35,6 +35,6 @@ Maven
 <dependency>
     <groupId>com.github.dyorgio.runtime</groupId>
     <artifactId>run-as-root</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
 </dependency>
 ```

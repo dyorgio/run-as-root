@@ -57,7 +57,7 @@
         <version.maven.compiler.plugin>3.7.0</version.maven.compiler.plugin>
         <version.animal.sniffer.maven.plugin>1.16</version.animal.sniffer.maven.plugin>
         
-        <version.out.process>1.2.3</version.out.process>
+        <version.out.process>1.2.6</version.out.process>
     </properties>
     
     <dependencies>

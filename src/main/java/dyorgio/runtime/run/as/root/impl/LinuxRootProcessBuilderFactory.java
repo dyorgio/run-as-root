@@ -45,4 +45,9 @@ public class LinuxRootProcessBuilderFactory implements RootProcessBuilderFactory
                 throw new UserCanceledException();
         }
     }
+
+    @Override
+    public void consume(Process startedProcess) {
+        // nothing
+    }
 }

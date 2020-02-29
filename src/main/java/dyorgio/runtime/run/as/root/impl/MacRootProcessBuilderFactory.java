@@ -19,6 +19,7 @@ import dyorgio.runtime.run.as.root.NotAuthorizedException;
 import dyorgio.runtime.run.as.root.UserCanceledException;
 import java.util.List;
 import dyorgio.runtime.run.as.root.RootProcessBuilderFactory;
+import java.io.File;
 
 /**
  * Elevate out process in macOS platform.
@@ -35,7 +36,7 @@ public class MacRootProcessBuilderFactory implements RootProcessBuilderFactory {
         }
 
         return new ProcessBuilder("osascript", "-e",//
-                "do shell script \"" + builder + " 2>&1\" with administrator privileges").inheritIO();
+                "do shell script \"" + builder + " 2>&1\" with administrator privileges").directory(new File("./")).inheritIO();
     }
 
     @Override
@@ -46,4 +47,8 @@ public class MacRootProcessBuilderFactory implements RootProcessBuilderFactory {
         }
     }
 
+    @Override
+    public void consume(Process startedProcess) {
+        // nothing
+    }
 }

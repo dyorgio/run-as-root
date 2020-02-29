@@ -86,4 +86,9 @@ public class WinRootProcessBuilderFactory implements RootProcessBuilderFactory {
                 throw new UserCanceledException();
         }
     }
+
+    @Override
+    public void consume(Process startedProcess) {
+        // nothing
+    }
 }

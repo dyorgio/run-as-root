@@ -44,8 +44,8 @@
         <connection>scm:git:git@github.com:dyorgio/run-as-root.git</connection>
         <developerConnection>scm:git:git@run-as-root.github.com:dyorgio/run-as-root.git</developerConnection>
         <url>https://github.com/dyorgio/run-as-root.git</url>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -57,7 +57,7 @@
         <version.maven.compiler.plugin>3.7.0</version.maven.compiler.plugin>
         <version.animal.sniffer.maven.plugin>1.16</version.animal.sniffer.maven.plugin>
         
-        <version.out.process>1.2.6</version.out.process>
+        <version.out.process>1.2.7</version.out.process>
     </properties>
     
     <dependencies>
@@ -130,6 +130,8 @@
                         <version>${version.maven.release.plugin}</version>
                         <configuration>
                             <autoVersionSubmodules>true</autoVersionSubmodules>
+                            <localCheckout>true</localCheckout>
+                            <pushChanges>false</pushChanges>
                             <useReleaseProfile>false</useReleaseProfile>
                             <releaseProfiles>release</releaseProfiles>
                             <goals>deploy</goals>
@@ -185,6 +187,28 @@
                                 </goals>
                             </execution>
                         </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>de.jutzig</groupId>
+                        <artifactId>github-release-plugin</artifactId>
+                        <version>1.4.0</version>
+                        <configuration>
+                            <description>
+Upgrade OutProcess dependency (Java > 9 support).
+Support custom classpath.
+Updade license header year.
+                            </description>
+                            <releaseName>${project.version}</releaseName>
+                            <tag>${project.version}</tag>
+                            <fileSets>
+                                <fileSet>
+                                    <directory>${project.build.directory}</directory>
+                                    <includes>
+                                        <include>${project.artifactId}*.jar</include>
+                                    </includes>
+                                </fileSet>
+                            </fileSets>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>

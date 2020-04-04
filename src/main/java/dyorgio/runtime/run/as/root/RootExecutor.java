@@ -1,5 +1,5 @@
 /** *****************************************************************************
- * Copyright 2017 See AUTHORS file.
+ * Copyright 2020 See AUTHORS file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,10 +17,12 @@ package dyorgio.runtime.run.as.root;
 
 import dyorgio.runtime.out.process.CallableSerializable;
 import dyorgio.runtime.out.process.OneRunOutProcess;
+import dyorgio.runtime.out.process.OutProcessUtils;
 import dyorgio.runtime.out.process.RunnableSerializable;
 import dyorgio.runtime.run.as.root.impl.LinuxRootProcessBuilderFactory;
 import dyorgio.runtime.run.as.root.impl.MacRootProcessBuilderFactory;
 import dyorgio.runtime.run.as.root.impl.WinRootProcessBuilderFactory;
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Locale;
@@ -67,9 +69,40 @@ public class RootExecutor implements Serializable {
      * Creates an instance with specific java options
      *
      * @param javaOptions JVM options (ex:"-xmx32m")
+     * @throws java.io.IOException In case of out-process creation problems.
      */
     public RootExecutor(String... javaOptions) throws IOException {
-        this.outProcess = new OneRunOutProcess(MANAGER, javaOptions);
+        this(null, javaOptions);
+    }
+
+    /**
+     * Creates an instance with specific classpath and java options
+     *
+     * @param classpath custom classpath, use <code>null</code> to use current
+     * JVM classpath.
+     * @param javaOptions JVM options (ex:"-xmx32m")
+     * @throws java.io.IOException In case of out-process creation problems.
+     * @see OutProcessUtils#getCurrentClasspath()
+     * @see OutProcessUtils#generateClassPath(java.lang.Class...)
+     */
+    public RootExecutor(String classpath, String[] javaOptions) throws IOException {
+        this(null, classpath, javaOptions);
+    }
+
+    /**
+     * Creates an instance with specific tmp dir, classpath and java options
+     *
+     * @param tmpDir Temporary dir, use <code>null</code> to use default tmp
+     * dir.
+     * @param classpath custom classpath, use <code>null</code> to use current
+     * JVM classpath.
+     * @param javaOptions JVM options (ex:"-xmx32m")
+     * @throws java.io.IOException In case of out-process creation problems.
+     * @see OutProcessUtils#getCurrentClasspath()
+     * @see OutProcessUtils#generateClassPath(java.lang.Class...)
+     */
+    public RootExecutor(File tmpDir, String classpath, String... javaOptions) throws IOException {
+        this.outProcess = new OneRunOutProcess(tmpDir, MANAGER, classpath, javaOptions);
     }
 
     /**

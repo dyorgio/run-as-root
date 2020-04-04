@@ -7,6 +7,7 @@
             <goal>release:clean</goal>
             <goal>release:prepare</goal>
             <goal>release:perform</goal>
+            <goal>github-release:release</goal>
         </goals>
         <activatedProfiles>
             <activatedProfile>release</activatedProfile>

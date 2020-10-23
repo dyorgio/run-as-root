@@ -5,7 +5,7 @@
     
     <groupId>com.github.dyorgio.runtime</groupId>
     <artifactId>run-as-root</artifactId>
-    <version>1.2.3-SNAPSHOT</version>
+    <version>1.2.3</version>
     
     <packaging>jar</packaging>
     
@@ -44,7 +44,7 @@
         <connection>scm:git:git@github.com:dyorgio/run-as-root.git</connection>
         <developerConnection>scm:git:git@run-as-root.github.com:dyorgio/run-as-root.git</developerConnection>
         <url>https://github.com/dyorgio/run-as-root.git</url>
-        <tag>HEAD</tag>
+        <tag>run-as-root-1.2.3</tag>
     </scm>
     
     <properties>
@@ -194,7 +194,7 @@
                         <version>1.4.0</version>
                         <configuration>
                             <description>
-Upgrade OutProcess dependency (Java > 9 support).
+Upgrade OutProcess dependency (Java &gt; 9 support).
 Support custom classpath.
 Updade license header year.
                             </description>

@@ -22,12 +22,17 @@ Usage
 RootExecutor rootExecutor = new RootExecutor("-Xmx64m");
 
 // Execute privileged action without return
-rootExecutor.run(() -> System.out.println("Call your admin code here."));
+rootExecutor.run(() -> // Call your admin code here.));
 
 // Execute privileged action with return
-String value = rootExecutor.call(() -> System.getProperty("Call your admin code with return here."));
+Object value = rootExecutor.call(() -> // Call your admin code with return here.));
 System.out.println(value);
 ```
+
+Tips
+-----
+* Init simple, after include this lib in your project just try to write a file in a protected folder to validate if it is working.
+* Avoid big classpaths, it can be a problem in Windows. [#8](https://github.com/dyorgio/run-as-root/issues/8)
 
 Maven
 -----
@@ -35,6 +40,6 @@ Maven
 <dependency>
     <groupId>com.github.dyorgio.runtime</groupId>
     <artifactId>run-as-root</artifactId>
-    <version>1.2.2</version>
+    <version>1.2.3</version>
 </dependency>
 ```

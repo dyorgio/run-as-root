@@ -22,10 +22,15 @@ Usage
 RootExecutor rootExecutor = new RootExecutor("-Xmx64m");
 
 // Execute privileged action without return
-rootExecutor.run(() -> // Call your admin code here.));
+rootExecutor.run(() -> {
+    // Call your admin code here.
+}));
 
 // Execute privileged action with return
-Object value = rootExecutor.call(() -> // Call your admin code with return here.));
+Object value = rootExecutor.call(() -> {
+    // Call your admin code with return here.
+    return null;
+}));
 System.out.println(value);
 ```
 

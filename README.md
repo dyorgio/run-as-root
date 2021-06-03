@@ -1,6 +1,6 @@
 Run As Root
 ===============
-[![Build Status](https://travis-ci.org/dyorgio/run-as-root.svg?branch=master)](https://travis-ci.org/dyorgio/run-as-root) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.dyorgio.runtime/run-as-root/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.dyorgio.runtime/run-as-root) [![deepcode](https://www.deepcode.ai/api/gh/badge?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwbGF0Zm9ybTEiOiJnaCIsIm93bmVyMSI6ImR5b3JnaW8iLCJyZXBvMSI6InJ1bi1hcy1yb290IiwiaW5jbHVkZUxpbnQiOmZhbHNlLCJhdXRob3JJZCI6MjcwODMsImlhdCI6MTYyMTc3NDg5NX0.cmn4lrCfP-W9VIiZQIomsVUoGsebhY3LA21FuTbUHV0)](https://www.deepcode.ai/app/gh/dyorgio/run-as-root/_/dashboard?utm_content=gh%2Fdyorgio%2Frun-as-root)
+[![Build Status](https://travis-ci.org/dyorgio/run-as-root.svg?branch=master)](https://travis-ci.org/dyorgio/run-as-root) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.dyorgio.runtime/run-as-root/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.dyorgio.runtime/run-as-root) [![Known Vulnerabilities](https://snyk.io/test/github/dyorgio/run-as-root/badge.svg)](https://snyk.io/test/github/dyorgio/run-as-root)
 
 A java library to run pieces of code as root using native root password input dialog.
 
